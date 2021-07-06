@@ -1,6 +1,4 @@
-# Computer Science
-
-## Linux
+# Linux
 
 - foreground / background
     - `sudo -s` : 관리자 권한 얻기
