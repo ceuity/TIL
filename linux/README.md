@@ -634,30 +634,30 @@ LVM을 사용하기 위해서는 `lvm2` 를 별도로 설치해야 한다. 설�
 
 4. File System 생성 후 Mount
 
-`lvs` : 생성한 LV, VG 확인
+    `lvs` : 생성한 LV, VG 확인
 
-`mkfs.ext4 /dev/vg_name/vol1`
+    `mkfs.ext4 /dev/vg_name/vol1`
 
-`mount -t ext4 /dev/vg_name/vol1 /mnt/vol1`
+    `mount -t ext4 /dev/vg_name/vol1 /mnt/vol1`
 
-![images42.png](./images/images42.png)
+    ![images42.png](./images/images42.png)
 
 5. Resize
 
-File System에서는 Volume의 Resize가 불가하지만, LVM에서는 가능하다.
+    File System에서는 Volume의 Resize가 불가하지만, LVM에서는 가능하다.
 
-`vgs` : Volume Group 출력
+    `vgs` : Volume Group 출력
 
-`lvresize -L +1G -n /dev/vg_name/vol1`
+    `lvresize -L +1G -n /dev/vg_name/vol1`
 
-`df -hP /mnt/vol1`
+    `df -hP /mnt/vol1`
 
-확인해보면 아직 File System의 사이즈는 늘어나지 않았다. 왜냐하면 Logical Volume의 크기만 늘렸을 뿐, 아직 File System에 적용하지 않았기 때문이다.
+    확인해보면 아직 File System의 사이즈는 늘어나지 않았다. 왜냐하면 Logical Volume의 크기만 늘렸을 뿐, 아직 File System에 적용하지 않았기 때문이다.
 
-`resize2fs /dev/vg_name/vol1` 명령어를 통해 File System도 늘려준다.
+    `resize2fs /dev/vg_name/vol1` 명령어를 통해 File System도 늘려준다.
 
-![images43.png](./images/images43.png)
+    ![images43.png](./images/images43.png)
 
-![images44.png](./images/images44.png)
+    ![images44.png](./images/images44.png)
 
-Logical Volume은 `/dev/mapper/vg_name/vol1` 으로도 접근 가능하다.
+    Logical Volume은 `/dev/mapper/vg_name/vol1` 으로도 접근 가능하다.
