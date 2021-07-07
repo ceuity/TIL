@@ -1,5 +1,5 @@
-# study
-공부한 것 적어두기
+# TIL
+Today I Learned
 
 |Category |
 |:------------:|
