@@ -661,3 +661,48 @@ LVM을 사용하기 위해서는 `lvm2` 를 별도로 설치해야 한다. 설�
     ![images44.png](./images/images44.png)
 
     Logical Volume은 `/dev/mapper/vg_name/vol1` 으로도 접근 가능하다.
+    
+## Service management with SYSTEMD
+
+### Creating a SYSTEMD Service
+
+`systemd` 는 서비스를 자동화하고 관리하기 위한 시스템이라고 볼 수 있다.
+
+예를 들어, 컴퓨터가 부팅될 때 `project.sh` Shell Script 파일을 실행시켜서 서비스를 한다고 가정하면 고려해야 할 사항이 여러 가지 있을 것이다. 스크립트 파일이 실행되기 전에 DB가 먼저 실행되어야 하거나, 실행이 실패했을 때 다시 실행하도록 하거나, Log를 남기거나 하는 등의 행동이다. 이런 행동을 `/etc/systemd/system/` 폴더에 해당 `project.service` 형태의 파일을 만들어주면 system의 daemon 으로 사용할 수 있다.
+
+![images45.png](./images/images45.png)
+
+위의 예시를 기준으로 설명하면,
+
+- Program - `/usr/bin/project-mercury.sh` : [Service] 필드의 ExecStart 속성으로 정의한다.
+- Start Python Application after Postgres DB : [Unit] 필드의 After 속성으로 정의한다.
+- Use Service Account project_mercury : [Service] 필드의 User 속성으로 정의한다.
+- Auto Restart on Failure : [Service] 필드의 Restart 속성으로 정의한다.
+- Restart Interval 10 seconds : [Service] 필드의 RestartSec 속성으로 정의한다.
+- Log Service Events : 자동으로 Log를 생성해주기 때문에 따로 설정하지 않아도 된다.
+- Load when booting into Graphical Mode : [Install] 필드의 WantedBy 속성으로 정의한다.
+
+`service` 파일 작성이 완료되면 `systemctl daemon-reload` 명령어를 통해 다시 로드한 후 서비스를 시작하면 적용된다.
+
+![images46.png](./images/images46.png)
+
+### SYSTEMD Tools
+
+`systemctl` : Manage system state
+
+`journalctl` : Query systemd journal
+
+- Service Management with SYSTEMD
+    - `systemctl {start|stop|restart|rerload|enable|disable|status} service`
+        - Active : Service Running
+        - Inactive : Service Stopped
+        - Failed : Crashed/Error/Timeout etc.
+    - `systemctl daemon-reload` : System manager configuration을 다시 불러온다. systemd의 변경사항도 반영한다.
+    - `systemctl edit project.service --full` : 해당 service의 daemon configure 파일을 수정한다.
+- SYSTEMCTL to manage state
+    - `systemctl get-default` : runlevel을 출력한다.
+    - `systemctl set-default multi-user.target` : runlevel을 설정한다.
+    - `systemctl list-units --all` : systemd에서 로드한 모든 Unit을 출력한다.
+- `journalctl` : systemd 로 실행되는 모든 Unit의 Log를 출력한다.
+    - `-b` : 현재 부팅이후의 Log를 출력한다.
+    - `-u UNIT` : 해당 Unit의 Log를 출력한다.
