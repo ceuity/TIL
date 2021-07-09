@@ -87,3 +87,40 @@ Vagrant는 여러 개의 VM을 효율적으로 관리하기에 유용한 소프�
     - Hyper-V
     - Docker
     - Custom
+
+## Networking Basics
+
+### Switching and Routing
+
+- Switching
+    - 서로 다른 장치를 연결
+
+    ![images10.png](./images/images10.png)
+
+- Routing
+    - 네트워크 안에서 데이터를 보낼 때 최적의 경로를 선택하는 과정
+
+    ![images11.png](./images/images11.png)
+
+- Gateway
+    - 서로 다른 네트워크를 연결
+
+    ![images12.png](./images/images12.png)
+
+IP Forward을 이용하여 다음과 같은 상황에서도 통신이 이루어질 수 있다. IP Forward 기능을 이용할 경우, 중간에 있는 B 컴퓨터의 `/proc/sys/net/ipv4/ip_forward` 의 값을 1로 바꾸면 된다. 다만, 이 방법은 일시적이기 때문에, 영구적으로 적용할 경우 `/etc/sysctl.conf` 파일의 `net.ipv4.ip_forward = 1`로 변경해주어야 한다.
+
+![images13.png](./images/images13.png)
+
+### DNS
+
+DNS는 Domain Name System의 약자로 IP를 이름으로 사용할 수 있게 해주는 서비스이다.
+
+![images14.png](./images/images14.png)
+
+각 PC마다 `hosts` 파일을 설정해야 한다면, 다른 PC의 IP가 바뀌었을 때 일일이 파일을 수정하기는 쉽지 않은 일이다. 따라서 DNS만을 가지고 있는 서버를 별도로 사용한다. 이를 DNS 서버라고 부른다.
+
+![images15.png](./images/images15.png)
+
+DNS 서버의 주소는 `/etc/resolv.conf` 에 설정한다. 여러 개의 네임서버 주소를 설정할 수 있으며, 도메인을 찾는 순서는 기본적으로 `hosts` → `nameserver` 이다.
+
+![images16.png](./images/images16.png)
