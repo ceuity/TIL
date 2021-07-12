@@ -124,3 +124,19 @@ DNS는 Domain Name System의 약자로 IP를 이름으로 사용할 수 있게 �
 DNS 서버의 주소는 `/etc/resolv.conf` 에 설정한다. 여러 개의 네임서버 주소를 설정할 수 있으며, 도메인을 찾는 순서는 기본적으로 `hosts` → `nameserver` 이다.
 
 ![images16.png](./images/images16.png)
+
+## Applications Basics
+
+### Introduction
+
+Language Types
+
+- Compiled : C, C++, Java
+    1. Develop Source Code
+    2. Compile
+    3. Run
+- Interpreted : Python, NodeJS, Ruby
+    1. Develop Source Code
+    2. Run
+
+Code는 사람이 읽을 수 있는 Human Readable Source Code에서 Compiler 를 통해 기계가 읽을 수 있는 Machine Code로 변환된다. 그러나 컴퓨터 마다 CPU등 환경이 다르기 때문에 항상 동일한 Machine Code로 변환해서는 안된다. 따라서 중간에 Byte Code로 변환한 후, 해당 시스템에 맞게 Interpreter가 Machine Code로 변환해준다.
