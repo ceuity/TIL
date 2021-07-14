@@ -140,3 +140,54 @@ Language Types
     2. Run
 
 Code는 사람이 읽을 수 있는 Human Readable Source Code에서 Compiler 를 통해 기계가 읽을 수 있는 Machine Code로 변환된다. 그러나 컴퓨터 마다 CPU등 환경이 다르기 때문에 항상 동일한 Machine Code로 변환해서는 안된다. 따라서 중간에 Byte Code로 변환한 후, 해당 시스템에 맞게 Interpreter가 Machine Code로 변환해준다.
+
+## Web Server
+
+### Apache Web Server
+
+Apache Web Server는 CentOS에서 기본적으로 설치되어 있기 때문에 추가로 설치해줄 필요는 없다. 설치가 되어있지 않을 시, `yum install httpd` 명령어를 이용해서 설치한다.
+
+설치 후에는 `service httpd start` 명령어로 서비스를 시작할 수 있고, `service httpd status` 명령어로 현재 작동 상태를 확인할 수 있다.
+
+방화벽 사용시에는 `firewall-cmd --permanent --add-service=http` 명령어로 방화벽 허용 규칙을 설정해줘야 한다.
+
+log는 `/var/log/httpd/access_log` 또는 `error_log` 파일로 남겨지게 된다.
+
+`/etc/httpd/conf/httpd.conf` 파일을 수정하여 Apache Web Server의 설정을 변경할 수 있다.
+
+ 설정 파일을 다음과 같이 설정하면 Apache Web Server 하나로 여러 개의 웹사이트를 호스팅할 수 있다.
+
+```bash
+<VirtualHost *:80>
+  ServerName www.houses.com
+	DocumentRoot /var/www/houses
+</VirtualHost>
+
+<VirtualHost *:80>
+  ServerName www.oranges.com
+	DocumentRoot /var/www/oranges
+</VirtualHost>
+```
+
+설정 파일을 수정한 후에는 `service httpd restart` 명령어로 재시작해야 설정이 적용된다.
+
+### Apache Tomcat
+
+Apache Tomcat은 자바 기반의 웹 어플리케이션을 호스팅하는 웹서버 환경을 제공한다. 따라서 자바가 먼저 설치되어 있어야 한다.
+
+`bin` 폴더의 스크립트 파일을 이용하여 서버의 실행, 종료를 한다.
+
+### Python - Flask
+
+Flask는 파이썬 기반의 웹 프레임워크이다.
+
+- Gunicorn
+- uWSGI
+- Gevent
+- Twisted Web
+
+### NodeJS- Express
+
+Express.js는 Node.js 기반의 웹 프레임워크이다.
+
+ `npm install` 을 이용하여 Dependency를 설치하고,  `node app.js` 명령어로 실행하거나 `npm run start:dev` 명령어로 실행한다.
