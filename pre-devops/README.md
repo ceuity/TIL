@@ -359,3 +359,197 @@ Mongo Shell
 
 - `db.persons.find()` : Collection 조회
     - `db.persons.find({"name": "hyulee"})` : find 함수의 arguments로 JSON 포맷을 사용하여 특정 데이터를 조회할 수 있다.
+
+## Security
+
+### SSL & TLS Basics
+
+SSL은 서버와 데이터를 주고받을 때, 데이터의 보안을 위해 사용한다. 만약 SSL 없이 통신하게 될 경우 중요한 데이터가 해커에 의해 도청당하여 악용될 가능성이 있다.
+
+암호화를 하는 방식은 크게 두 가지로 나눌 수 있다.
+
+- 대칭 키 암호화(Symmetric key algorithm)
+    - 암호화(Encryption)와 복호화(Decryption)에 같은 키를 사용한다.
+    - 비대칭 키 방식에 비해 빠르다.
+    - 키를 해킹 당할 경우, 암호화의 의미가 없어진다.
+- 비대칭 키 암호화(Asymmetric key algorithm)
+    - 암호화(Encryption)와 복호화(Decryption)에 다른 키를 사용한다.
+    - 통상적으로 공개 키(Public key)와 비밀 키(Private key)로 구분한다.
+    - 대칭 키 방식에 비해 느리다.
+    - 공개 키로 암호화한 데이터는 같은 쌍의 비밀 키를 이용하여 복호화 할 수 있다. 따라서 암호화가 필요한 데이터를 공개 키를 이용하여 암호화를 하고 해당 데이터를 전송하여 비밀 키로 복호화 한다.
+
+일반적으로 대칭 키 암호화 알고리즘이 비대칭 키 암호화 알고리즘보다 빠르기 때문에 비대칭 키 방식을 이용하여 대칭 키를 교환하고, 이후로는 대칭 키를 이용하는 방식으로 데이터를 주고받는다.
+
+- `ssh-keygen` : key file 생성
+- `ssh-copy-id` : key file 복사
+
+위와 같은 방식으로 키를 교환하여 데이터를 주고 받으면 안전하다고 생각할 수 있을 것이다. 그러나 해커에 의해 내가 접속하고자 하는 사이트(ex. 은행 사이트)가 아닌 피싱 사이트로 접속하게 된다면 암호화를 한다고 해도 내 데이터는 안전하지 않을 것이다. 따라서 해당 웹사이트가 정상적인 웹사이트인지 확인하기 위해 **인증서(Certification)**가 존재한다.
+
+이러한 인증서를 발급해주는 기관을 CA(Certificate Authority)라고 하며, Symantec, DigiCert, Comodo, GlobalSign과 같은 회사들이 있다.
+
+- 인증서 발급 방법
+
+    `openssl` 을 이용하여 인증서를 발급 받을 수 있다.
+
+    ```bash
+    openssl req -new -key my-bank.key -out my-bank.csr 
+    openssl x509 -req -days 365 -in my-bank.csr -signkey my-bank.key -out my-bank.crt
+    ```
+
+- 인증서가 발급되는 과정
+    1. Certificate Signing Request(CSR)을 생성한다.
+    2. 개인 키를 이용하여 정보를 검증한다.
+    3. 서명 후 인증서를 생성한다.
+
+    만약 해커가 피싱을 위해 특정 사이트의 인증서를 발급받을 경우, 이미 인증되어 있는 사이트라면 해당 인증서를 발급받을 때 사용했던 개인 키 파일이 있어야 하므로 2번의 검증 단계에 실패하여 해당 사이트의 인증서를 발급받을 수 없게 된다. 따라서 해커는 해당 사이트의 도메인을 인증 받은 도메인으로 호스팅할 수 없게 된다.
+
+우리가 사용하는 브라우저에는 이미 신뢰할 수 있는 인증서들이 저장되어 있다. 따라서 우리가 여러 웹사이트를 접속할 때 브라우저에서 자동적으로 해당 사이트가 안전한지 아닌지 검증해준다.
+
+- PKI(Public Key Infrastructure)
+
+    메세지의 암호화 및 전자서명을 제공하는 복합적인 보안 시스템을 말한다. 간단하게 이야기하면 신분을 증명하는 시스템이라고 할 수 있다. 해당 시스템을 요약하자면 다음과 같다.
+
+    1. 비대칭 키를 이용하여 SSH로 원격 접속
+    2. 서버의 개인 키를 이용하여 서버의 공개 키 정보를 포함하는 CSR 생성
+    3. 생성된 CSR을 CA의 개인 키로 암호화하여 인증서 발급
+    4. 사용자가 서버에 접속하면 해당 인증서를 전송하고, 브라우저는 해당 인증서를 CA의 공개 키를 이용하여 복호화
+    5. 복호화한 인증서엔 서버의 공개 키를 포함하고 있으므로, 해당 키를 이용하여 클라이언트의 대칭 키를 암호화하여 서버로 전송
+    6. 서버의 개인 키를 이용하여 클라이언트의 대칭 키를 포함하고 있는 데이터를 복호화
+    7. 대칭 키를 이용하여 클라이언트와 서버가 통신
+
+    만약 키에만 의존하여 통신을 하면 해커가 대칭 키를 획득하여 서버와 통신을 시도할 때, 서버는 데이터가 어디서 왔는지 신경쓰지 않고 요청에 대해 응답할 것이다. 따라서 데이터를 요청하는 사용자가 누구인지 확인하기 위해 클라이언트 인증서를 사용한다. 클라이언트 인증서는 사용 중인 시스템을 기반으로 자동적으로 생성하여 서버로 전송하기 때문에 별도의 조작이 필요하지 않다.
+
+    인증서나 공개 키는 주로 `*.crt`, `*.pem` 파일명을 사용하고, 개인 키는 `*.key`, `*-key.pem` 을 사용한다.
+
+## General Pre-Requisites
+
+![images21.png](./images/images21.png)
+
+### YAML
+
+YAML은 데이터를 표현하는 하나의 Format이다.
+
+YAML 파일로 데이터를 나타내는 방법에는 크게 3가지가 있다.
+
+- Key Value Pair
+
+    ```yaml
+    Fruit: Apple
+    Vegetable: carrot
+    Liquid: Water
+    Meat: Chicken
+    ```
+
+- Array/List - Ordered
+
+    ```yaml
+    Fruits:
+    -  Orange
+    -  Apple
+    -  Banana
+
+    Vegetables:
+    -  Carrot
+    -  Cauliflower
+    -  Tomato
+    ```
+
+- Dictionary/Map - Unordered
+
+    ```yaml
+    Banana:
+      Calories: 105
+    	Fat: 0.4 g
+    	Carbs: 27 g
+
+    Grapes:
+    	Calories: 62
+    	Fat: 0.3 g
+    	Carbs: 16 g
+    ```
+
+YAML 파일은 Space로 속성을 구분하므로 Indent에 주의한다.
+
+- Key Value/Dictionary/Lists
+
+    ```yaml
+    Fruits:
+    	-	Banana:
+    		  Calories: 105
+    			Fat: 0.4 g
+    			Carbs: 27 g
+    		
+    	-	Grapes:
+    			Calories: 62
+    			Fat: 0.3 g
+    			Carbs: 16 g
+    ```
+
+- Dictionary vs List vs List of Dictionaries
+    - Dictionary in Dictionary
+
+        ![images22.png](./images/images22.png)
+
+    - List of Strings
+
+        ![images23.png](./images/images23.png)
+
+    - List of Dictionaries
+
+        ![images24.png](./images/images24.png)
+
+- Dictionary/Map vs Array/List
+
+    Dictionary는 순서가 없지만 List는 순서가 있다.
+
+    ![images25.png](./images/images25.png)
+
+### JSON & JSON Path
+
+- JSON
+
+    JSON은 중괄호(`{}`)를 사용하여 데이터를 구분한다.
+
+    List는 대괄호(`[]`)를 사용하여 정의하며, List의 각 요소는 comma(`,`)로 구분한다.
+
+    JSON과 YAML은 서로 쉽게 변환할 수 있다.
+
+- JSON Path
+
+    JSON Path는 JSON 또는 YAML 포맷으로 되어있는 데이터를 분석해주는 Query Language이다.
+
+    dot(`.`)을 이용하여 해당 필드의 특정 요소에 접근할 수 있다.
+
+    - Dictionaries
+
+        root Dictionary가 존재하며, 해당 Dictionary에 접근할 땐 `$` 표시를 사용한다.
+
+        쿼리를 실행했을 때 얻어지는 결과값은 List형태로 출력된다.
+
+        ![images26.png](./images/images26.png)
+
+    - List
+
+        root List가 존재하며, 해당 List에 접근할 땐 `$` 표시를 사용한다.
+
+        List의 Index로 요소에 접근한다.
+
+        ![images27.png](./images/images27.png)
+
+    - Dictionary & Lists
+
+        ![images28.png](./images/images28.png)
+
+    - Criteria
+
+        조건문을 이용하여 특정 결과만 얻어낼 수 있다.
+
+        ![images29.png](./images/images29.png)
+
+        `car.wheels.location == "rear-right"` 인 `model`을 찾는 쿼리 예제
+
+        ![images30.png](./images/images30.png)
+
+- Query
+
+    ![images31.png](./images/images31.png)
