@@ -553,3 +553,78 @@ YAML 파일은 Space로 속성을 구분하므로 Indent에 주의한다.
 - Query
 
     ![images31.png](./images/images31.png)
+    
+## E-Commerce Site
+
+### All-In-One
+
+- Install DB
+
+    ```bash
+    sudo yum install mariadb-server -y
+    sudo service mariadb start
+    sudo systemctl enable mariadb
+    ```
+
+- Setting DB
+
+    ```sql
+    # $ mysql -u root -p
+    CREATE DATABASE ecomdb;
+    CREATE USER 'ecomuser'@'localhost' IDENTIFIED BY 'ecompassword';
+    GRANT ALL PRIVILEGES ON *.* TO 'ecomuser'@'localhost';
+    FLUSH PRIVILEGES;
+
+    ```
+
+- Load DB
+
+    `sudo mysql < db-load-script.sql`
+
+    ```sql
+    USE ecomdb;
+    CREATE TABLE products (id mediumint(8) unsigned NOT NULL auto_increment,Name varchar(255) default NULL,Price varchar(255) default NULL, ImageUrl varchar(255) default NULL,PRIMARY KEY (id)) AUTO_INCREMENT=1;
+
+    INSERT INTO products (Name,Price,ImageUrl) VALUES ("Laptop","100","c-1.png"),("Drone","200","c-2.png"),("VR","300","c-3.png"),("Tablet","50","c-5.png"),("Watch","90","c-6.png"),("Phone Covers","20","c-7.png"),("Phone","80","c-8.png"),("Laptop","150","c-4.png");
+    ```
+
+- Install httpd, php, php-mysql
+
+    `sudo yum install -y httpd php php-mysql`
+
+- Change Default page
+
+    `/etc/httpd/conf/httpd.conf` 파일에서 `index.html` 을 `index.php` 로 변경한다.
+
+- Start and enable httpd
+
+    `sudo systemctl enable httpd`
+
+    `sudo systemctl start httpd`
+
+- Download code with git
+
+    Git repo URL : [https://github.com/kodekloudhub/learning-app-ecommerce.git](https://github.com/kodekloudhub/learning-app-ecommerce.git)
+
+    target directory : `/var/www/html/`
+
+- Connect DB with php
+
+    `index.php` 파일에서 `mysqli_connect`의 IP 부분을 localhost로 수정한다.
+
+    `sudo sed -i 's/172.20.1.101/localhost/g' /var/www/html/index.php` 로도 수정할 수 있다.
+
+### Distributed
+
+- DB Server
+    - Install DB
+    - Create DB and User
+    - Load DB
+- Web Server
+    - Install httpd, php, php-mysql
+    - Change Default page
+    - Start and enable httpd
+    - Download code with git
+    - Connect DB with php
+
+        `index.php` 파일에서 `mysqli_connect`의 IP 부분을 db의 IP로 수정한다.
