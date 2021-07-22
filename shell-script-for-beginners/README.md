@@ -118,3 +118,42 @@ command를 실행하기 위해서는 실행 권한을 가지고 있어야 한다
         - `-l` : floating point result
 
     ![images04.png](./images/images04.png)
+
+## Flow Control
+
+### Conditional Logic
+
+만약 로켓이 발사했을 때 실패했다면, 실패의 원인을 알고 싶을 것이다. 따라서 로켓 발사가 실패했을 때만 `rocket-debug` 커맨드가 실행되도록 할 것이다.
+
+- if, else if, else
+
+```bash
+# if rocket-status is failed, then run this
+if [ $rocket_status = "failed" ]
+then
+		rocket-debug $mission_name
+elif [ $rocket_status = "success" ]
+then
+		echo "This is successful"
+else
+		echo "The state is not failed or success"
+fi
+```
+
+- Conditional Operators
+    - 두 값을 비교할 때에는 대괄호를 사용하며 각 값 사이에 공백이 있어야 한다.
+
+        ![images05.png](./images/images05.png)
+
+    - bash에서는 `[[ ]]` 를 이용한 표현식이 가능하다.
+
+        ![images06.png](./images/images06.png)
+
+    - `[ COND1 ] && [ COND2 ]` or `[[ COND1 && COND2 ]]` : and 연산
+    - `[ COND1 ] || [ COND2 ]` or `[[ COND1 || COND2 ]]` : or 연산
+
+    ![images07.png](./images/images07.png)
+
+    - File Level Operations
+
+        ![images08.png](./images/images08.png)
