@@ -6,4 +6,5 @@ Today I Learned
 |[Linux](./linux/README.md)|
 |[DevOps Pre-Requsite](./pre-devops/README.md)|
 |[Git for Beginners](./git-for-beginners/README.md)|
+|[Shell Scripts for Beginners](./shell-scripts-for-beginners/README.md)|
 |[Algorithm](./algorithm/README.md)|
