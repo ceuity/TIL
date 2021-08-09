@@ -7,4 +7,5 @@ Today I Learned
 |[DevOps Pre-Requsite](./pre-devops/README.md)|
 |[Git for Beginners](./git-for-beginners/README.md)|
 |[Shell Scripts for Beginners](./shell-script-for-beginners/README.md)|
+|[Ansible for the Absolute Beginners Course](./ansible-for-beginners/README.md)|
 |[Algorithm](./algorithm/README.md)|
