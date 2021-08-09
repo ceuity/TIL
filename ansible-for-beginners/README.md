@@ -214,3 +214,39 @@ Ansible은 각 기능에 맞는 여러가지 module을 지원한다.
     variable을 사용할 때는 double curly braces(`{{ }}`) 안에 변수명을 넣어 사용한다. 이와 같은 사용법을 Jinja2 Templating 이라고 하며, double curly braces는 단독으로 사용하지 않는다.
 
     ![images10.png](./images/images10.png)
+    
+## Conditionals, Loops & Roles
+
+### Ansible Conditionals
+
+OS마다 패키지 매니저가 다르기 때문에 특정 조건에 따라 다른 패키지 매니저를 사용할 때 Condition을 이용한다.
+
+- when : 해당 task를 실행시킬 조건을 지정하며, and나 or같은 연산자를 이용하여 여러 가지 조건을 추가할 수 있다.
+
+    ![images11.png](./images/images11.png)
+
+- Loops : 반복되는 작업을 variable list로 만들어서 반복할 수 있다. `loop` 속성에 `vars` 에서 정의한 속성의 넣으면 해당 속성은 `tasks` 내부에서 `item` 으로 접근할 수 있다.
+
+    ![images12.png](./images/images12.png)
+
+- Register : 해당 명령의 결과를 변수로 저장하기 위한 모듈이다. `register` 안에는 `stdout` 을 포함한 여러 가지 method가 존재하며, 해당 모듈을 이용하여 더 복잡한 조건을 지정할 수 있다.
+
+    ![images13.png](./images/images13.png)
+
+### Ansible Loops
+
+Loops는 반복되는 작업을 효율적으로 처리할 수 있도록 도와준다. `loop` 속성에 List 형식으로 값들을 정의하면 해당 값은 `tasks` 안에서 `item` 이라는 이름으로 사용할 수 있다.
+
+![images14.png](./images/images14.png)
+
+하나의 속성에 여러 가지 변수를 사용하고 싶을 땐 key, value 형태의 dictionary를 사용한다. 각 key는 item 의 속성이 되어 `item.key` 로 접근할 수 있다.
+
+![images15.png](./images/images15.png)
+
+With_* 구문을 이용하면 여러가지 반복가능한 요소들에 대하여 더 쉽게 사용할 수 있다.
+
+![images16.png](./images/images16.png)
+
+With_* 구문은 다양한 요소들을 제공한다.
+
+![images17.png](./images/images17.png)
