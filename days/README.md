@@ -10,3 +10,8 @@
     2. `credentials.json` 을 이용하여 `token.json` 생성
     3. Google API build 함수로 service 생성
     4. 원하는 API 호출
+
+## 2021-08-29
+
+- [DinD(docker in docker)와 DooD(docker out of docker)](https://aidanbae.github.io/code/docker/dinddood/)
+- [https://dkant.net/2019/06/25/circleci01/](https://dkant.net/2019/06/25/circleci01/)
