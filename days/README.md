@@ -14,4 +14,4 @@
 ## 2021-08-29
 
 - [DinD(docker in docker)와 DooD(docker out of docker)](https://aidanbae.github.io/code/docker/dinddood/)
-- [https://dkant.net/2019/06/25/circleci01/](https://dkant.net/2019/06/25/circleci01/)
+- [GitHub과 CircleCI를 활용한 자동배포](https://dkant.net/2019/06/25/circleci01/)
