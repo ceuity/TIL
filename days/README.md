@@ -15,3 +15,8 @@
 
 - [DinD(docker in docker)와 DooD(docker out of docker)](https://aidanbae.github.io/code/docker/dinddood/)
 - [GitHub과 CircleCI를 활용한 자동배포](https://dkant.net/2019/06/25/circleci01/)
+
+## 2021-09-06
+
+- [AWS CLI 구성 및 자격 증명 파일 설정](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-configure-files.html)
+- [AWS S3 CLI Reference](https://docs.aws.amazon.com/cli/latest/reference/s3/)
