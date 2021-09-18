@@ -20,3 +20,9 @@
 
 - [AWS CLI 구성 및 자격 증명 파일 설정](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-configure-files.html)
 - [AWS S3 CLI Reference](https://docs.aws.amazon.com/cli/latest/reference/s3/)
+
+## 2021-09-18
+
+- [Flask RESTPlus](https://flask-restplus.readthedocs.io/en/stable/api.html)
+- [OAuth2 정리 및 JWT를 이용한 로그인 유지 구현](https://messycode.tistory.com/58)
+- [Git GUI 소스트리(SourceTree) 설치방법과 사용방법](https://uxgjs.tistory.com/181)
