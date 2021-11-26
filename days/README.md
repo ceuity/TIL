@@ -26,3 +26,10 @@
 - [Flask RESTPlus](https://flask-restplus.readthedocs.io/en/stable/api.html)
 - [OAuth2 정리 및 JWT를 이용한 로그인 유지 구현](https://messycode.tistory.com/58)
 - [Git GUI 소스트리(SourceTree) 설치방법과 사용방법](https://uxgjs.tistory.com/181)
+
+## 2021-11-26
+
+- [python unittest 의 fixture scope](https://dev.to/ddangdol/python-unittest-fixture-scope-593a)
+- [[pytest] python 코드를 테스트 해봅시다.](https://binux.tistory.com/47)
+- [unittest vs pytest](https://www.bangseongbeom.com/unittest-vs-pytest.html)
+- [파이썬 단위 테스트 모듈 unittest에 대해 알아보자](https://sjquant.tistory.com/11)
