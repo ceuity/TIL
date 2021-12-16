@@ -33,3 +33,7 @@
 - [[pytest] python 코드를 테스트 해봅시다.](https://binux.tistory.com/47)
 - [unittest vs pytest](https://www.bangseongbeom.com/unittest-vs-pytest.html)
 - [파이썬 단위 테스트 모듈 unittest에 대해 알아보자](https://sjquant.tistory.com/11)
+
+## 2021-12-16
+
+- [객체지향 시스템과 패러다임 그리고 철학](https://black7375.tistory.com/86)
